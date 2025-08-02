@@ -1,0 +1,64 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Order with bKash Payment</title>
+<style>
+  body { font-family: Arial; background:#f9f9f9; padding:20px; }
+  .product { background:white; padding:15px; margin-bottom:10px; border-radius:5px; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  button { padding:8px 12px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer; }
+  button:disabled { background:gray; cursor:not-allowed; }
+  .status { margin-top:10px; color: orange; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h2>Product List</h2>
+
+<div id="productList"></div>
+
+<script>
+  const products = [
+    { name: "Free Fire Top Up", price: "100 TK" },
+    { name: "Weekly Lite", price: "50 TK" },
+    { name: "UniPin Voucher", price: "200 TK" }
+  ];
+
+  const productListDiv = document.getElementById('productList');
+
+  products.forEach((product, index) => {
+    const prodDiv = document.createElement('div');
+    prodDiv.className = 'product';
+    prodDiv.id = 'prod' + index;
+
+    prodDiv.innerHTML = `
+      <p>${product.name} - ${product.price}</p>
+      <button onclick="orderProduct('prod${index}', '${product.price}')">Order Now</button>
+      <div class="status" id="status-prod${index}"></div>
+    `;
+
+    productListDiv.appendChild(prodDiv);
+  });
+
+  function orderProduct(id, price) {
+    const uid = prompt("Enter your UID:");
+    if(!uid) {
+      alert("UID is required!");
+      return;
+    }
+    const trx = prompt(`Send ${price} to bKash and enter your transaction number:`);
+    if(!trx) {
+      alert("Transaction number is required!");
+      return;
+    }
+
+    document.getElementById('status-' + id).innerText = 
+      `Pending... Ordered by UID: ${uid}, bKash trx: ${trx}`;
+
+    document.querySelector('#' + id + ' button').disabled = true;
+  }
+</script>
+
+</body>
+</html>
